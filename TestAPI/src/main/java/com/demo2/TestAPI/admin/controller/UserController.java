@@ -1,36 +1,47 @@
 package com.demo2.TestAPI.admin.controller;
 
 import com.demo2.TestAPI.admin.model.UserModel;
+import com.demo2.TestAPI.service.UserService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("admin/user")
-
 public class UserController {
-    UserModel userModel;
+    UserService userService;
 
-    @GetMapping("{userID}")
-    public UserModel getUserModelDetail(String userID)
-    {
-        return userModel;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
-
+//chi tiet 1 user
+    @GetMapping("{userID}")
+    public UserModel getUserModelDetail(@PathVariable("userID") String userID)
+    {
+        return userService.getUserModel(userID);
+    }
+// chi tiet tat ca user trong table
+    @GetMapping()
+    public List<UserModel> getAllUserModelDetail()
+    {
+        return userService.getAllUserModel();
+    }
     @PostMapping
     public String createUserModelDetail(@RequestBody UserModel userModel)
     {
-        this.userModel = userModel;
+        userService.createUserModel(userModel);
         return "created successfully";
     }
     @PutMapping
     public String updateUserModelDetail(@RequestBody UserModel userModel)
     {
-        this.userModel = userModel;
+        userService.updateUserModel(userModel);
         return "updated successfully";
     }
     @DeleteMapping("{userID}")
-    public String deleteUserModelDetail(@RequestBody UserModel userModel)
+    public String deleteUserModelDetail(@PathVariable("userID") String userID)
     {
-        this.userModel = null;
+        userService.deleteUserModel(userID);
         return "deleted successfully";
     }
 
